@@ -42,7 +42,7 @@ app.get('/membership', (req, res) => {
 });
 
 app.get('/support', (req, res) => {
-  res.render('support', { title: '1:1 게임문의' });
+  res.render('support', { title: '게임문의' });
 });
 
 app.get('/mypage', (req, res) => {
