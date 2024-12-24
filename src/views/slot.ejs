@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <%- include('partials/head') %>
+  <link rel="stylesheet" href="/css/slot.css">
+</head>
+<body>
+  <%- include('partials/navbar') %>
+  
+  <%- include('partials/slot/winning-banner') %>
+  
+  <div class="content">
+    <div class="game-tabs">
+      <button class="tab-button active">인기게임</button>
+      <button class="tab-button">전체 게임</button>
+    </div>
+    
+    <%- include('partials/slot/game-grid') %>
+  </div>
+
+  <%- include('partials/footer') %>
+  <script type="module" src="/js/slot.js"></script>
+</body>
+</html>

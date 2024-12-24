@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>아바타 상점</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/modal.css">
+  <link rel="stylesheet" href="/css/profile-modal.css">
+  <link rel="stylesheet" href="/css/cash-charge-modal.css">
+  <link rel="stylesheet" href="/css/avatar-shop.css">
+  <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+  <%- include('partials/navbar') %>
+  <%- include('partials/profile-modal') %>
+  
+  <div class="content">
+    <%- include('partials/avatar-carousel') %>
+    
+    <div class="sections-container">
+      <div class="left-section">
+        <%- include('partials/notice-board') %>
+        <%- include('partials/customer-service') %>
+      </div>
+      
+      <div class="right-section">
+        <%- include('partials/game-guide') %>
+      </div>
+    </div>
+
+    <%- include('partials/service-icons') %>
+  </div>
+
+  <%- include('partials/footer') %>
+  <script type="module" src="/js/modal.js"></script>
+  <script type="module">
+    import { initProfileModal } from '/js/profileModal.js';
+    import { initCashChargeModal } from '/js/cash-charge-modal.js';
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      initProfileModal();
+      initCashChargeModal();
+    });
+  </script>
+</body>
+</html>

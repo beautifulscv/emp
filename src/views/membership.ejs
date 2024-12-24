@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <%- include('partials/head') %>
+  <link rel="stylesheet" href="/css/membership.css">
+</head>
+<body>
+  <%- include('partials/navbar') %>
+  
+  <div class="content">
+    <h2 class="section-title">멤버십</h2>
+    
+    <div class="membership-cards">
+      <%- include('partials/membership/vvip-card') %>
+      <%- include('partials/membership/vip-card') %>
+      <%- include('partials/membership/premium-card') %>
+    </div>
+
+    <%- include('partials/membership/terms') %>
+  </div>
+
+  <%- include('partials/footer') %>
+</body>
+</html>

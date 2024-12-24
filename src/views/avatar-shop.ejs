@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <%- include('partials/head') %>
+  <link rel="stylesheet" href="/css/avatar-shop-page.css">
+</head>
+<body>
+  <%- include('partials/navbar') %>
+  
+  <div class="content">
+    <div class="shop-header">
+      <h1>아바타 상점</h1>
+      <div class="filters">
+        <button class="filter-button active">전체</button>
+        <button class="filter-button">신규</button>
+        <button class="filter-button">인기</button>
+        <button class="filter-button">한정판</button>
+      </div>
+    </div>
+
+    <div class="avatar-grid">
+      <% for(let i = 1; i <= 12; i++) { %>
+        <%- include('partials/shop/avatar-item', {
+          image: `/images/avatar${i}.jpg`,
+          name: `아바타 ${i}`,
+          price: '1,000,000,000',
+          stock: '10,000'
+        }) %>
+      <% } %>
+    </div>
+  </div>
+
+  <%- include('partials/footer') %>
+  <script type="module" src="/js/avatar-shop.js"></script>
+</body>
+</html>

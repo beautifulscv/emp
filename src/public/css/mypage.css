@@ -1,0 +1,122 @@
+/* MyPage Styles */
+.content {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.mypage-section {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mypage-section h2 {
+  font-size: 18px;
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Profile Section */
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.profile-main {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-info h3 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.membership-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #ff6b00;
+  color: white;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.profile-details {
+  display: grid;
+  gap: 12px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  background: #f8f8f8;
+  border-radius: 4px;
+}
+
+/* Empty States */
+.empty-content {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+/* Financial Grid */
+.financial-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.financial-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f8f8f8;
+  border-radius: 4px;
+}
+
+.financial-item .label {
+  color: #666;
+}
+
+.financial-item .value {
+  font-weight: 500;
+}
+
+.note {
+  margin-top: 16px;
+  color: #666;
+  font-size: 13px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .content {
+    margin: 20px auto;
+  }
+  
+  .profile-main {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .financial-item {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+}
