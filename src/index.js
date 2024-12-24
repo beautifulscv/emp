@@ -10,6 +10,9 @@ const __dirname = dirname(__filename);
 const app = express();
 const port = 3000;
 
+
+console.log('Views directory:', join(__dirname, 'views'));
+
 // Set up EJS as view engine
 app.set('view engine', 'ejs');
 app.set('views', join(__dirname, 'views'));

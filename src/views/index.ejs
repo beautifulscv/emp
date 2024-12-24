@@ -15,16 +15,16 @@
 <body>
   <%- include('partials/navbar') %>
   <%- include('partials/profile-modal') %>
-  
+
   <div class="content">
     <%- include('partials/avatar-carousel') %>
-    
+
     <div class="sections-container">
       <div class="left-section">
         <%- include('partials/notice-board') %>
         <%- include('partials/customer-service') %>
       </div>
-      
+
       <div class="right-section">
         <%- include('partials/game-guide') %>
       </div>
@@ -38,11 +38,12 @@
   <script type="module">
     import { initProfileModal } from '/js/profileModal.js';
     import { initCashChargeModal } from '/js/cash-charge-modal.js';
-    
+
     document.addEventListener('DOMContentLoaded', () => {
       initProfileModal();
       initCashChargeModal();
     });
   </script>
+  <script type="module" src="/js/avatar-carousel.js"></script>
 </body>
 </html>

@@ -66,7 +66,7 @@
 /* Game Grid */
 .game-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, 1fr); /* Display 3 items per row on larger screens */
   gap: 24px;
   padding: 20px 0;
 }
@@ -81,9 +81,10 @@
   transform: translateY(-5px);
 }
 
+/* Maintain 889:495 Aspect Ratio */
 .game-card img {
   width: 100%;
-  height: 200px;
+  aspect-ratio: 889 / 495; /* Aspect ratio for responsive design */
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 8px;
@@ -97,18 +98,21 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
-  .banner-content {
-    flex-direction: column;
-    gap: 8px;
-  }
-  
+@media (max-width: 1024px) { /* Tablet mode */
   .game-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust to fill available space */
     gap: 16px;
   }
-  
+}
+
+@media (max-width: 768px) { /* Mobile mode */
+  .game-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Smaller columns for mobile */
+    gap: 16px;
+  }
+
   .game-card img {
-    height: 150px;
+    aspect-ratio: 889 / 495; /* Maintain aspect ratio */
   }
 }
+
