@@ -1,23 +1,26 @@
-/* Winning Banner Component */
 .winning-banner {
   background: linear-gradient(to right, #1a1a2e, #16213e);
   color: white;
   padding: 0.75rem 0;
   overflow: hidden;
   position: relative;
+  width: 100%;
 }
 
 .banner-content {
   display: flex;
   gap: 3rem;
   white-space: nowrap;
-  animation: marquee 30s linear infinite;
+  animation: marquee 20s linear infinite;
 }
 
-/* Create a seamless loop by duplicating content */
-.banner-content::after {
-  content: attr(data-content);
-  padding-left: 3rem;
+/* Duplicate content for seamless loop */
+.banner-content {
+  display: inline-flex;
+}
+
+.banner-content > * {
+  margin-right: 3rem;
 }
 
 .winner {
@@ -26,16 +29,16 @@
   align-items: center;
 }
 
-.winner .username {
+.username {
   color: #ffd700;
   font-weight: 500;
 }
 
-.winner .bonus {
+.bonus {
   color: #ff6b6b;
 }
 
-.winner .amount {
+.amount {
   color: #4cd137;
   font-weight: 500;
 }
@@ -49,7 +52,6 @@
   }
 }
 
-/* Pause animation on hover */
 .winning-banner:hover .banner-content {
   animation-play-state: paused;
 }

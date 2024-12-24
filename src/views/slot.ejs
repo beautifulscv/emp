@@ -4,23 +4,24 @@
   <%- include('partials/head') %>
   <link rel="stylesheet" href="/css/slot.css">
   <link rel="stylesheet" href="/css/components/tabs.css">
+  <link rel="stylesheet" href="/css/components/winning-banner.css">
 </head>
 <body>
   <%- include('partials/navbar') %>
-  
+
   <%- include('partials/slot/winning-banner') %>
-  
+
   <div class="content">
     <div class="tab-container">
       <div class="tab-navigation">
         <button class="tab-button" data-tab="popular">인기게임</button>
         <button class="tab-button" data-tab="all">전체 게임</button>
       </div>
-      
+
       <div class="tab-panel" data-panel="popular">
         <%- include('partials/slot/game-grid', { games: popularGames }) %>
       </div>
-      
+
       <div class="tab-panel" data-panel="all">
         <%- include('partials/slot/game-grid', { games: allGames }) %>
       </div>
@@ -29,5 +30,6 @@
 
   <%- include('partials/footer') %>
   <script type="module" src="/js/slot.js"></script>
+  <script type="module" src="/js/components/winning-banner.js"></script>
 </body>
 </html>
