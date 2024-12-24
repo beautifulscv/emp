@@ -1,13 +1,22 @@
-import { MOCK_USER } from './config/constants.js';
-import { auth } from './auth.js';
+import { initLoginForm } from './auth/loginForm.js';
+import { authState } from './auth/authState.js';
+import { initAuthUI } from './auth/authUI.js';
 
 // Modal functionality
 document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('loginModal');
   const loginBtn = document.getElementById('loginBtn');
-  const closeBtn = document.querySelector('.close');
-  const loginForm = document.getElementById('loginForm');
+  const closeBtn = modal?.querySelector('.close');
   const logoutBtn = document.getElementById('logoutBtn');
+
+  // Initialize auth UI
+  initAuthUI();
+
+  // Guard clause if modal doesn't exist
+  if (!modal) return;
+
+  // Initialize login form
+  initLoginForm(modal);
 
   if (loginBtn) {
     loginBtn.addEventListener('click', () => {
@@ -27,32 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const id = document.getElementById('userId').value;
-      const password = document.getElementById('userPassword').value;
-
-      if (id === MOCK_USER.id && password === MOCK_USER.password) {
-        auth.setSession({
-          id: MOCK_USER.id,
-          username: MOCK_USER.username,
-          avatarUrl: MOCK_USER.avatarUrl
-        });
-        modal.style.display = 'none';
-        loginForm.reset();
-      } else {
-        alert('Invalid credentials');
-      }
-    });
-  }
-
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
-      auth.clearSession();
+      authState.clearSession();
     });
   }
-
-  // Initialize UI based on session
-  auth.updateUI();
 });

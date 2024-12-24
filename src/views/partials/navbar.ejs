@@ -1,28 +1,47 @@
 <%- include('login-modal') %>
 <%- include('cash-charge-modal') %>
+<%- include('confirm-modal') %>
 
-<nav class="navbar">
+<nav class="navbar font-kr">
   <div class="nav-container">
     <div class="nav-links">
-      <a href="/" class="nav-item">아바타 상점</a>
-      <a href="#" id="cashChargeBtn" class="nav-item">캐시 충전</a>
-      <a href="/holdem" class="nav-item">홀덤</a>
-      <a href="/slot" class="nav-item">슬롯</a>
-      <a href="/membership" class="nav-item">멤버십</a>
-      <a href="/support" class="nav-item">게임문의</a>
+      <a href="/" class="nav-item <%= path === '/' ? 'active' : '' %>">아바타 상점</a>
+      <a href="/holdem" class="nav-item <%= path === '/holdem' ? 'active' : '' %>">홀덤</a>
+      <a href="/slot" class="nav-item <%= path === '/slot' ? 'active' : '' %>">슬롯</a>
+      <a href="/membership" class="nav-item <%= path === '/membership' ? 'active' : '' %>">멤버십</a>
+      <a href="/support" class="nav-item <%= path === '/support' ? 'active' : '' %>">게임문의</a>
     </div>
 
-    <div class="login-section">
-      <button id="loginBtn" class="login-button">로그인</button>
-    </div>
+    <div class="nav-actions">
+      <button id="cashChargeBtn" class="cash-charge-button font-kr-medium">
+        <span class="icon">💰</span>
+        캐시충전
+      </button>
 
-    <div class="user-section">
-      <a href="/mypage" class="mypage-link">마이페이지</a>
-      <div class="user-profile">
-        <img class="user-avatar" alt="User avatar">
-        <span class="username"></span>
+      <% if (!isAuthenticated) { %>
+      <div class="login-section">
+        <button id="loginBtn" class="login-button font-kr-medium">로그인</button>
       </div>
-      <button id="logoutBtn" class="logout-button">로그아웃</button>
+      <% } else { %>
+      <div class="user-section">
+        <a href="/mypage" class="nav-item <%= path === '/mypage' ? 'active' : '' %>">마이페이지</a>
+        <div class="user-profile">
+          <img class="user-avatar" alt="User avatar">
+          <span class="username font-kr-medium"></span>
+        </div>
+        <button id="logoutBtn" class="logout-button font-kr-medium">로그아웃</button>
+      </div>
+      <% } %>
     </div>
   </div>
 </nav>
+
+<script type="module">
+  import { initAuthUI } from '/js/auth/authUI.js';
+  import { initLogoutHandler } from '/js/auth/logoutHandler.js';
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    initAuthUI();
+    initLogoutHandler();
+  });
+</script>

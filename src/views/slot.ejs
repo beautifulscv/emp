@@ -3,6 +3,7 @@
 <head>
   <%- include('partials/head') %>
   <link rel="stylesheet" href="/css/slot.css">
+  <link rel="stylesheet" href="/css/components/tabs.css">
 </head>
 <body>
   <%- include('partials/navbar') %>
@@ -10,12 +11,20 @@
   <%- include('partials/slot/winning-banner') %>
   
   <div class="content">
-    <div class="game-tabs">
-      <button class="tab-button active">인기게임</button>
-      <button class="tab-button">전체 게임</button>
+    <div class="tab-container">
+      <div class="tab-navigation">
+        <button class="tab-button" data-tab="popular">인기게임</button>
+        <button class="tab-button" data-tab="all">전체 게임</button>
+      </div>
+      
+      <div class="tab-panel" data-panel="popular">
+        <%- include('partials/slot/game-grid', { games: popularGames }) %>
+      </div>
+      
+      <div class="tab-panel" data-panel="all">
+        <%- include('partials/slot/game-grid', { games: allGames }) %>
+      </div>
     </div>
-    
-    <%- include('partials/slot/game-grid') %>
   </div>
 
   <%- include('partials/footer') %>

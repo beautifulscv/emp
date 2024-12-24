@@ -3,6 +3,7 @@
 <head>
   <%- include('partials/head') %>
   <link rel="stylesheet" href="/css/holdem.css">
+  <link rel="stylesheet" href="/css/components/holdem-room-modal.css">
 </head>
 <body>
   <%- include('partials/navbar') %>
@@ -13,7 +14,9 @@
     </div>
   </div>
 
+  <%- include('partials/holdem/room-modal') %>
   <%- include('partials/footer') %>
+  
   <script type="module" src="/js/holdem.js"></script>
 </body>
 </html>

@@ -1,0 +1,120 @@
+/* Holdem Room Modal Styles */
+.holdem-room-modal .modal-content {
+  max-width: 1000px;
+  padding: 0;
+  background: #fff;
+}
+
+.room-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.room-list-header h2 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.room-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem; /* Increased gap between buttons */
+}
+
+.auto-join-button {
+  padding: 0.5rem 1rem;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auto-join-button:hover {
+  background: #1d4ed8;
+}
+
+.auto-join-button.active {
+  background: #dc2626;
+}
+
+.auto-join-button.active:hover {
+  background: #b91c1c;
+}
+
+/* Table Styles */
+.room-list-container {
+  padding: 1.5rem;
+  overflow-x: auto;
+}
+
+.room-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px; /* Ensure table doesn't get too cramped */
+}
+
+.room-list-table th,
+.room-list-table td {
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.room-list-table th {
+  background: #f8f8f8;
+  font-weight: 500;
+  color: #333;
+}
+
+.room-list-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Table Cell Styles */
+.room-number {
+  font-weight: 500;
+  color: #333;
+}
+
+.player-count {
+  color: #2563eb;
+}
+
+.player-count.full {
+  color: #dc2626;
+}
+
+.buy-in,
+.big-blind {
+  font-family: monospace;
+  color: #333;
+}
+
+.lock-icon {
+  font-size: 1.1rem;
+}
+
+.enter-button {
+  padding: 0.5rem 1rem;
+  background: #ff6b00;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.enter-button:hover {
+  background: #ff8533;
+}
+
+.enter-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

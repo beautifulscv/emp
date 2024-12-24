@@ -1,12 +1,13 @@
+import { TabComponent } from './components/tabs.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-  const tabs = document.querySelectorAll('.tab-button');
-  
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      // Remove active class from all tabs
-      tabs.forEach(t => t.classList.remove('active'));
-      // Add active class to clicked tab
-      tab.classList.add('active');
+  const tabContainer = document.querySelector('.tab-container');
+  if (tabContainer) {
+    new TabComponent(tabContainer, {
+      onChange: (tabId) => {
+        console.log(`Changed to tab: ${tabId}`);
+        // Add any tab-specific logic here
+      }
     });
-  });
+  }
 });

@@ -1,21 +1,15 @@
+import { TabComponent } from './components/tabs.js';
+import { initNoticeItems } from './components/notice-item.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Tab switching
-  const tabs = document.querySelectorAll('.tab-button');
-  
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
+  const tabContainer = document.querySelector('.tab-container');
+  if (tabContainer) {
+    new TabComponent(tabContainer, {
+      onChange: (tabId) => {
+        if (tabId === 'notice') {
+          initNoticeItems();
+        }
+      }
     });
-  });
-  
-  // Notice expansion
-  const expandButtons = document.querySelectorAll('.expand-button');
-  
-  expandButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      button.classList.toggle('expanded');
-      // Add logic for expanding notice content
-    });
-  });
+  }
 });

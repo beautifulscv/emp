@@ -1,5 +1,11 @@
 <section class="mypage-section profile-section">
-  <h2>내 정보</h2>
+  <div class="section-header">
+    <h2>내 정보</h2>
+    <button id="editProfileBtn" class="edit-button">
+      내 정보 수정
+    </button>
+  </div>
+  
   <div class="profile-content">
     <div class="profile-main">
       <img id="userAvatar" class="profile-avatar" alt="User avatar">
@@ -16,3 +22,5 @@
     </div>
   </div>
 </section>
+
+<%- include('profile-edit-modal') %>

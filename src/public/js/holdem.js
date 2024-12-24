@@ -1,29 +1,48 @@
+import { initHoldemRoomModal } from './components/holdem-room-modal.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Add smooth scrolling for channel list
-  const channelList = document.querySelector('.channels');
-  let isDown = false;
-  let startX;
-  let scrollLeft;
+  // Initialize room modal
+  const roomModal = initHoldemRoomModal();
 
-  channelList.addEventListener('mousedown', (e) => {
-    isDown = true;
-    startX = e.pageX - channelList.offsetLeft;
-    scrollLeft = channelList.scrollLeft;
+  // Add click handlers to channel cards
+  const channelCards = document.querySelectorAll('.channel-card');
+  channelCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+      roomModal.show();
+    });
   });
 
-  channelList.addEventListener('mouseleave', () => {
-    isDown = false;
-  });
+  // Carousel functionality
+  const channelList = document.querySelector('.channel-list');
+  const prevButton = document.querySelector('.carousel-button.prev');
+  const nextButton = document.querySelector('.carousel-button.next');
 
-  channelList.addEventListener('mouseup', () => {
-    isDown = false;
-  });
+  if (channelList && prevButton && nextButton) {
+    const scrollAmount = 270; // card width + gap
 
-  channelList.addEventListener('mousemove', (e) => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - channelList.offsetLeft;
-    const walk = (x - startX) * 2;
-    channelList.scrollLeft = scrollLeft - walk;
-  });
+    prevButton.addEventListener('click', () => {
+      channelList.scrollBy({
+        left: -scrollAmount,
+        behavior: 'smooth'
+      });
+    });
+
+    nextButton.addEventListener('click', () => {
+      channelList.scrollBy({
+        left: scrollAmount,
+        behavior: 'smooth'
+      });
+    });
+
+    // Update button visibility based on scroll position
+    function updateButtons() {
+      const { scrollLeft, scrollWidth, clientWidth } = channelList;
+      prevButton.style.opacity = scrollLeft > 0 ? '1' : '0.5';
+      nextButton.style.opacity = scrollLeft < scrollWidth - clientWidth ? '1' : '0.5';
+    }
+
+    channelList.addEventListener('scroll', updateButtons);
+    updateButtons(); // Initial state
+  }
 });

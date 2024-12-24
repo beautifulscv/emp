@@ -1,0 +1,55 @@
+/* Winning Banner Component */
+.winning-banner {
+  background: linear-gradient(to right, #1a1a2e, #16213e);
+  color: white;
+  padding: 0.75rem 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-content {
+  display: flex;
+  gap: 3rem;
+  white-space: nowrap;
+  animation: marquee 30s linear infinite;
+}
+
+/* Create a seamless loop by duplicating content */
+.banner-content::after {
+  content: attr(data-content);
+  padding-left: 3rem;
+}
+
+.winner {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.winner .username {
+  color: #ffd700;
+  font-weight: 500;
+}
+
+.winner .bonus {
+  color: #ff6b6b;
+}
+
+.winner .amount {
+  color: #4cd137;
+  font-weight: 500;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Pause animation on hover */
+.winning-banner:hover .banner-content {
+  animation-play-state: paused;
+}
