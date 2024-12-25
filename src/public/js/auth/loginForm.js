@@ -9,6 +9,7 @@ export function initLoginForm(modal) {
   const userIdInput = form.querySelector('#userId');
   const passwordInput = form.querySelector('#userPassword');
   const submitButton = form.querySelector('.login-submit');
+  const errorContainer = form.querySelector('.login-error-message');
 
   // Rate limiting setup
   const MAX_ATTEMPTS = 5;
@@ -16,51 +17,39 @@ export function initLoginForm(modal) {
   let failedAttempts = 0;
   let lockoutEndTime = 0;
 
-  function showError(message, fieldId = null) {
-    const errorElement = fieldId
-        ? form.querySelector(`#${fieldId}`).closest('.form-group').querySelector('.error-message')
-        : form.querySelector('.form-group .error-message');
-
-    if (errorElement) {
-      errorElement.textContent = message;
-      errorElement.closest('.form-group').classList.add('error');
+  function showError(message) {
+    if (errorContainer) {
+      errorContainer.textContent = message;
+      errorContainer.classList.add('visible');
+      // Add shake animation for emphasis
+      errorContainer.classList.add('shake');
+      setTimeout(() => {
+        errorContainer.classList.remove('shake');
+      }, 500);
     }
   }
 
-  function clearError(input) {
-    const formGroup = input.closest('.form-group');
-    formGroup.classList.remove('error');
-    const errorElement = formGroup.querySelector('.error-message');
-    if (errorElement) {
-      errorElement.textContent = '';
+  function clearError() {
+    if (errorContainer) {
+      errorContainer.textContent = '';
+      errorContainer.classList.remove('visible');
     }
-  }
-
-  function clearAllErrors() {
-    form.querySelectorAll('.form-group').forEach(group => {
-      group.classList.remove('error');
-      const errorElement = group.querySelector('.error-message');
-      if (errorElement) {
-        errorElement.textContent = '';
-      }
-    });
   }
 
   function validateForm() {
-    let isValid = true;
-    clearAllErrors();
+    clearError();
 
     if (!userIdInput.value.trim()) {
-      showError('아이디를 입력해주세요', 'userId');
-      isValid = false;
+      showError('아이디를 입력해주세요');
+      return false;
     }
 
     if (!passwordInput.value.trim()) {
-      showError('비밀번호를 입력해주세요', 'userPassword');
-      isValid = false;
+      showError('비밀번호를 입력해주세요');
+      return false;
     }
 
-    return isValid;
+    return true;
   }
 
   function setLoadingState(isLoading) {
@@ -106,7 +95,7 @@ export function initLoginForm(modal) {
   // Input event listeners for real-time validation
   [userIdInput, passwordInput].forEach(input => {
     input.addEventListener('input', () => {
-      clearError(input);
+      clearError();
       submitButton.disabled = false;
     });
   });
@@ -135,7 +124,7 @@ export function initLoginForm(modal) {
         });
         modal.style.display = 'none';
         form.reset();
-        clearAllErrors();
+        clearError();
       } else {
         // Failed login
         if (!handleFailedAttempt()) {
@@ -144,6 +133,7 @@ export function initLoginForm(modal) {
 
         // Clear password field on failed attempt
         passwordInput.value = '';
+        passwordInput.focus();
       }
     } catch (error) {
       console.error('Login error:', error);
