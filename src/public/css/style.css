@@ -25,3 +25,19 @@ body {
   color: #333;
   margin-bottom: 1.25rem;
 }
+
+.view-more-link {
+  display: inline-block;
+  padding: 0.25rem 0.75rem; /* Reduced padding */
+  border: 1px solid #000;
+  border-radius: 9999px;
+  text-decoration: none;
+  color: #000;
+  transition: all 0.2s ease;
+  font-size: 0.875rem; /* Added smaller font size */
+}
+
+.view-more-link:hover {
+  background-color: #000;
+  color: #fff;
+}
