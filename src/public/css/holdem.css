@@ -1,14 +1,16 @@
 /* Holdem Page Styles */
 .content {
+  width: 100%;
   max-width: 1200px;
   margin: 20px auto;
   padding: 0 20px;
 }
 
-/* Channel List */
+/* Channel List Container */
 .channels {
   position: relative;
   padding: 20px 40px;
+  width: 100%;
 }
 
 /* Channel Carousel */
@@ -18,11 +20,14 @@
   overflow-x: hidden;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  width: 100%;
 }
 
 /* Channel Card */
 .channel-card {
-  flex: 0 0 250px;
+  flex: 1;
+  min-width: 200px;
+  max-width: 300px;
   background: #1a472a;
   border-radius: 8px;
   padding: 20px;
@@ -145,5 +150,16 @@
 
   .carousel-button {
     display: none;
+  }
+}
+
+/* Wide Screen Optimizations */
+@media (min-width: 1200px) {
+  .channel-list {
+    justify-content: space-between;
+  }
+
+  .channel-card {
+    flex: 1 1 0;
   }
 }
