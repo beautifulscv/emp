@@ -7,14 +7,14 @@
   <div class="avatar-carousel">
     <button class="carousel-button prev">&#10094;</button>
     <div class="avatar-items">
-      <% for (let i = 1; i <= 10; i++) { %>
+      <% avatars.forEach(avatar => { %>
         <%- include('./shop/avatar-item', {
-        image: `/images/avatar_0088.jpg`,
-        name: `아바타 ${i}`,
-        price: '10,000',
-        stock: '10,000'
+        image: avatar.image,
+        name: avatar.name,
+        price: avatar.price,
+        stock: avatar.stock
         }) %>
-      <% } %>
+      <% }); %>
     </div>
     <button class="carousel-button next">&#10095;</button>
   </div>
