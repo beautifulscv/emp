@@ -5,30 +5,36 @@ export function initAuthUI() {
   const loginSection = document.querySelector('.login-section');
   const userSection = document.querySelector('.user-section');
 
-  if (!loginSection || !userSection) return;
+  console.log('initAuthUI::addListener');
+  // Add listener for auth state changes
+  authState.addListener(updateUI);
+
+  console.log('initAuthUI::init');
+  // if (!loginSection || !userSection) return; //
 
   // Update UI based on current auth state
   function updateUI() {
+    console.log('updateUI')
     const user = authState.getUser();
     console.log('user:', user);
 
     if (user) {
-      loginSection.style.display = 'none';
-      userSection.style.display = 'flex';
+      if(loginSection) loginSection.style.display = 'none';
+      if(userSection) userSection.style.display = 'flex';
 
-      const avatar = userSection.querySelector('.user-avatar');
-      const username = userSection.querySelector('.username');
+      if(userSection) {
+        const avatar = userSection.querySelector('.user-avatar');
+        const username = userSection.querySelector('.username');
 
-      if (avatar) avatar.src = user.avatarUrl;
-      if (username) username.textContent = user.username;
+        if (avatar) avatar.src = user.avatarUrl;
+        if (username) username.textContent = user.username;
+      }
     } else {
-      loginSection.style.display = 'flex';
-      userSection.style.display = 'none';
+      if(loginSection) loginSection.style.display = 'flex';
+      if(userSection) userSection.style.display = 'none';
     }
   }
 
-  // Add listener for auth state changes
-  authState.addListener(updateUI);
 
   // Initial UI update
   updateUI();

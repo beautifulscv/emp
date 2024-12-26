@@ -117,6 +117,7 @@ export function initLoginForm(modal) {
       if (userId === MOCK_USER.id && password === MOCK_USER.password) {
         // Successful login
         failedAttempts = 0;
+        console.log('setSession')
         authState.setSession({
           id: MOCK_USER.id,
           username: MOCK_USER.username,
