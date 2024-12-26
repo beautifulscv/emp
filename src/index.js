@@ -177,7 +177,6 @@ app.get('/holdem', async (req, res) => {
 });
 
 app.get('/slot', async (req, res) => {
-
   let rows = mockGames.popular;
   try {
     rows = await executeQuery("select gameName as title, thumbnailUrl as image from gameInfo where gameCategoryId = 0", []);
@@ -193,8 +192,14 @@ app.get('/slot', async (req, res) => {
   });
 });
 
-app.get('/membership', (req, res) => {
-  res.render('membership', { title: '멤버십' });
+app.get('/membership', async (req, res) => {
+  let memberships = mockGames.memberships;
+  try {
+    memberships = await executeQuery("select id, earnedExp, bonusMoney, monthlyFee, imageUrl, membershipName from membership;", []);
+    console.log(JSON.stringify(memberships, null, 2));
+  } catch (e) {
+  }
+  res.render('membership', { title: '멤버십', memberships });
 });
 
 app.get('/support', (req, res) => {
