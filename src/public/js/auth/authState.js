@@ -8,7 +8,7 @@ class AuthState {
 
   // Add state change listener
   addListener(callback) {
-    console.log('addListener')
+    // console.log('addListener')
     this.listeners.add(callback);
   }
 
@@ -19,7 +19,7 @@ class AuthState {
 
   // Notify all listeners of state change
   notifyListeners() {
-    console.log('notifyListeners', this.listeners)
+    // console.log('notifyListeners', this.listeners)
     this.listeners.forEach(callback => callback(this.getUser()));
   }
 
@@ -30,7 +30,7 @@ class AuthState {
 
   // Set user session
   setSession(userData) {
-    console.log('setSession!')
+    // console.log('setSession!')
     sessionService.set(userData);
     document.cookie = `auth=${JSON.stringify(userData)}; path=/`;
     this.notifyListeners();
