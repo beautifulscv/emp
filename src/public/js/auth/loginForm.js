@@ -114,11 +114,19 @@ export function initLoginForm(modal) {
       const userId = userIdInput.value;
       const password = passwordInput.value;
 
-      if (userId === MOCK_USER.id && password === MOCK_USER.password) {
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, password }),
+      });
+
+      const result = await response.json();
+      if(response.ok && result.success) { //(userId === MOCK_USER.id && password === MOCK_USER.password) {
+        const { user } = result;
         // Successful login
         authState.setSession({
-          id: MOCK_USER.id,
-          username: MOCK_USER.username,
+          id: user.id,//MOCK_USER.id,
+          username: user.username, //MOCK_USER.username,
           avatarUrl: MOCK_USER.avatarUrl,
           // add additional user data here (including cash if needed)
           cash: 5000000

@@ -21,6 +21,8 @@ app.set('views', join(__dirname, 'views'));
 // Serve static files
 app.use(express.static(join(__dirname, 'public')));
 
+app.use(express.json());
+
 // Add middleware
 app.use(addViewHelpers);
 app.use(checkAuthState);
@@ -93,6 +95,49 @@ app.get('/mypage', (req, res) => {
 // Add register route
 app.get('/register', (req, res) => {
   res.render('register', { title: '회원가입' });
+});
+
+app.post('/login', async (req, res) => {
+  const { userId, password } = req.body;
+
+  // Basic check: if either field is missing, return an error
+  if (!userId || !password) {
+    return res.status(400).json({ message: 'Missing credentials' });
+  }
+
+  try {
+    // Query the DB to find a matching user
+    const rows = await executeQuery(
+        'SELECT * FROM user WHERE username = ? AND passwordHash = ? LIMIT 1',
+        [userId, password]
+    );
+
+    if (rows.length > 0) {
+      // Found user
+      const user = rows[0];
+      console.log('User logged in:', user.username);
+      // In production, you'd probably store a session or JWT here
+      // For example, set a cookie: req.session.user = { ... }
+
+      return res.json({
+        success: true,
+        user: {
+          id: user.id,
+          username: user.username,
+          avatarUrl: user.avatarUrl || '/images/avatar_placeholder.png',
+          // any other user fields you want to expose
+        },
+      });
+    } else {
+      // No user found
+      return res
+          .status(401)
+          .json({ success: false, message: 'Invalid credentials' });
+    }
+  } catch (error) {
+    console.error('Login error:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
 });
 
 // Start server
