@@ -141,8 +141,47 @@ const mockGames = {
         "image": "/images/avatar_7873.jpg"
       }
     ]
+  ],
+  channels: [
+    {
+      "name": "자유",
+      "requirement": "제한없음",
+      "minimum": 0
+    },
+    {
+      "name": "아마추어",
+      "requirement": "3억 이상",
+      "minimum": 300000000
+    },
+    {
+      "name": "프로",
+      "requirement": "6억 이상",
+      "minimum": 600000000
+    },
+    {
+      "name": "챔피언",
+      "requirement": "10억 이상",
+      "minimum": 1000000000
+    }
+  ],
+  memberships: [
+    {
+      "id": 1,
+      "earnedExp": 5,
+      "bonusMoney": 30000000,
+      "monthlyFee": 3000,
+      "imageUrl": "/images/membership_premium.png",
+      "membershipName": "프리미엄"
+    },
+    {
+      "id": 2,
+      "earnedExp": 7,
+      "bonusMoney": 30000000,
+      "monthlyFee": 5000,
+      "imageUrl": "/images/membership_vip.png",
+      "membershipName": "VIP"
+    }
   ]
-
 };
 
 // Routes
@@ -167,7 +206,7 @@ app.get('/avatar-shop', async (req, res) => {
 });
 
 app.get('/holdem', async (req, res) => {
-  let channels = mockGames.channel;
+  let channels = mockGames.channels;
   try {
     channels = await executeQuery("select channelName as name, description as requirement, minimum from pokerChannel;", []);
     console.log(JSON.stringify(channels, null, 2));
