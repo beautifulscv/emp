@@ -1,41 +1,39 @@
-// Authentication UI management
 import { authState } from './authState.js';
 
 export function initAuthUI() {
   const loginSection = document.querySelector('.login-section');
   const userSection = document.querySelector('.user-section');
+  const cashAmountEl = document.querySelector('.cash-amount');
 
-  console.log('initAuthUI::addListener');
-  // Add listener for auth state changes
+  // 1. Attach a listener
   authState.addListener(updateUI);
 
-  console.log('initAuthUI::init');
-  // if (!loginSection || !userSection) return; //
 
-  // Update UI based on current auth state
   function updateUI() {
-    console.log('updateUI')
     const user = authState.getUser();
-    console.log('user:', user);
+    if (!loginSection || !userSection) return;
 
     if (user) {
-      if(loginSection) loginSection.style.display = 'none';
-      if(userSection) userSection.style.display = 'flex';
+      loginSection.style.display = 'none';
+      userSection.style.display = 'flex';
 
-      if(userSection) {
-        const avatar = userSection.querySelector('.user-avatar');
-        const username = userSection.querySelector('.username');
+      // Example: update username, avatar, cash, etc.
+      const avatar = userSection.querySelector('.user-avatar');
+      const username = userSection.querySelector('.username');
+      if (avatar)   avatar.src = user.avatarUrl;
+      if (username) username.textContent = user.username;
 
-        if (avatar) avatar.src = user.avatarUrl;
-        if (username) username.textContent = user.username;
+      // If your user object has cash info
+      if (cashAmountEl && user.cash !== undefined) {
+        cashAmountEl.textContent = user.cash.toLocaleString();
       }
     } else {
-      if(loginSection) loginSection.style.display = 'flex';
-      if(userSection) userSection.style.display = 'none';
+      // Hide user section, show login
+      loginSection.style.display = 'flex';
+      userSection.style.display = 'none';
     }
   }
 
-
-  // Initial UI update
+  // 2. Call once on startup in case user is already logged in
   updateUI();
 }

@@ -116,12 +116,12 @@ export function initLoginForm(modal) {
 
       if (userId === MOCK_USER.id && password === MOCK_USER.password) {
         // Successful login
-        failedAttempts = 0;
-        console.log('setSession')
         authState.setSession({
           id: MOCK_USER.id,
           username: MOCK_USER.username,
-          avatarUrl: MOCK_USER.avatarUrl
+          avatarUrl: MOCK_USER.avatarUrl,
+          // add additional user data here (including cash if needed)
+          cash: 5000000
         });
         modal.style.display = 'none';
         form.reset();

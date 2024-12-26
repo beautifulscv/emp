@@ -18,12 +18,10 @@
         캐시충전
       </button>
 
-      <% if (!isAuthenticated) { %>
-      <div class="login-section">
+      <div class="login-section" style="display: none;">
         <button id="loginBtn" class="login-button font-kr-medium">로그인</button>
       </div>
-      <% } else { %>
-      <div class="user-section">
+      <div class="user-section" style="display: none;">
         <a href="/mypage" class="nav-item <%= path === '/mypage' ? 'active' : '' %>">마이페이지</a>
         <div class="user-profile">
           <img class="user-avatar" alt="User avatar">
@@ -31,7 +29,6 @@
         </div>
         <button id="logoutBtn" class="logout-button font-kr-medium">로그아웃</button>
       </div>
-      <% } %>
     </div>
   </div>
 </nav>
@@ -41,7 +38,9 @@
   import { initLogoutHandler } from '/js/auth/logoutHandler.js';
 
   document.addEventListener('DOMContentLoaded', () => {
-    initAuthUI();
+    if (document.querySelector('.navbar')) {
+      initAuthUI();
+    }
     initLogoutHandler();
   });
 </script>
