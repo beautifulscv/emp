@@ -21,5 +21,15 @@
 
   <script type="module" src="/js/modal.js"></script>
   <script type="module" src="/js/holdem.js"></script>
+  <script type="module">
+    import { initProfileModal } from '/js/profileModal.js';
+    import { initCashChargeModal } from '/js/cash-charge-modal.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initProfileModal();
+      initCashChargeModal();
+    });
+  </script>
+
 </body>
 </html>
