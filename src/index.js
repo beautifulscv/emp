@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { addViewHelpers } from './middleware/viewHelpers.js';
 import { checkAuthState } from './middleware/authMiddleware.js';
+import {executeQuery} from "./database.js";
 
 // Get directory name for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -26,9 +27,16 @@ app.use(checkAuthState);
 // Mock game data
 const mockGames = {
   popular: [
-    { id: 1, title: '아낙수나문', image: '/images/TA001.png' },
-    { id: 2, title: '리틀킹', image: '/images/TA002.png' }
-  ],
+    {
+      "title": "Book",
+      "image": "/images/TA001.png"
+    },
+    {
+      "title": "King Arthur",
+      "image": "/images/TA002.png"
+    }
+  ]
+  ,
   all: [
     { id: 1, title: '아낙수나문', image: '/images/TA001.png' },
     { id: 2, title: '리틀킹', image: '/images/TA002.png' },
@@ -50,11 +58,20 @@ app.get('/holdem', (req, res) => {
   res.render('holdem', { title: '홀덤' });
 });
 
-app.get('/slot', (req, res) => {
-  res.render('slot', { 
+app.get('/slot', async (req, res) => {
+
+  let rows = mockGames.popular;
+  try {
+    rows = await executeQuery("select gameName as title, thumbnailUrl as image from gameInfo where gameCategoryId = 0", []);
+  } catch (error) {
+    console.log(error);
+  }
+  console.log(JSON.stringify(rows, null, 2));
+
+  res.render('slot', {
     title: '슬롯',
-    popularGames: mockGames.popular,
-    allGames: mockGames.all
+    popularGames: rows,
+    allGames: rows
   });
 });
 

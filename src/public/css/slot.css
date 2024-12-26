@@ -1,8 +1,27 @@
 /* Slot Page Styles */
+.hero-bg {
+  /* Let’s give it a minimum height so we have a clear “hero” area */
+  min-height: 500px; /* adjust as you see fit */
+
+  /* Full width and background image */
+  width: 100%;
+  background: url('/images/poker_background_3.jpg') no-repeat center top;
+  background-size: cover;
+
+  /* Flex container to align content at the bottom */
+  display: flex;
+  flex-direction: column;   /* let children stack vertically */
+  justify-content: flex-end; /* push the content to the bottom */
+  align-items: center;       /* center horizontally */
+  margin: 0;                 /* remove any default margin */
+}
+
 .content {
+  width: 100%;
   max-width: 1200px;
-  margin: 20px auto;
-  padding: 0 20px;
+  margin: 0 auto;  /* horizontally center within .hero-bg */
+  /* If you need a tiny bottom spacing from the hero edge: */
+  /* margin-bottom: 20px; */
 }
 
 /* Winning Banner */

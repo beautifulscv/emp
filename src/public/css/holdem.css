@@ -1,14 +1,35 @@
 /* Holdem Page Styles */
+.hero-bg {
+  /* Let’s give it a minimum height so we have a clear “hero” area */
+  min-height: 500px; /* adjust as you see fit */
+
+  /* Full width and background image */
+  width: 100%;
+  background: url('/images/poker_background_2.jpg') no-repeat center top;
+  background-size: cover;
+
+  /* Flex container to align content at the bottom */
+  display: flex;
+  flex-direction: column;   /* let children stack vertically */
+  justify-content: flex-end; /* push the content to the bottom */
+  align-items: center;       /* center horizontally */
+  margin: 0;                 /* remove any default margin */
+}
+
 .content {
   width: 100%;
   max-width: 1200px;
-  margin: 20px auto;
-  padding: 0 20px;
+  margin: 0 auto;  /* horizontally center within .hero-bg */
+  /* If you need a tiny bottom spacing from the hero edge: */
+  /* margin-bottom: 20px; */
 }
 
 /* Channel List Container */
 .channels {
   position: relative;
+  /* Use your desired image path */
+
+  /* Existing properties */
   padding: 20px 40px;
   width: 100%;
 }
@@ -23,21 +44,26 @@
   width: 100%;
 }
 
-/* Channel Card */
 .channel-card {
   flex: 1;
   min-width: 200px;
   max-width: 300px;
-  background: #1a472a;
+  background: white;
   border-radius: 8px;
   padding: 20px;
   text-decoration: none;
-  color: white;
+  color: #333;
   transition: transform 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #eaeaea;
 }
 
 .channel-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
 }
 
 .channel-header {
@@ -46,51 +72,35 @@
 }
 
 .channel-header h3 {
-  margin: 0 0 8px;
+  margin: 0 0 8px 0;
   font-size: 18px;
+  /* Optional accent color for the title */
   color: #ffd700;
 }
 
 .player-count {
   font-size: 14px;
-  color: #a0a0a0;
+  opacity: 0.9;
 }
 
-/* Channel Buttons */
 .channel-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.pc-button,
-.web-button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.2s;
   text-align: center;
 }
 
-.pc-button {
-  background: #ff6b00;
-  color: white;
-}
-
-.pc-button:hover {
-  background: #ff8533;
-}
-
 .web-button {
-  background: #333;
-  color: white;
+  background: #fff;
+  color: #1a472a;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s, color 0.2s;
 }
 
 .web-button:hover {
-  background: #444;
+  background: #ffd700;
+  color: #1a472a;
 }
 
 /* Carousel Navigation */
@@ -163,3 +173,5 @@
     flex: 1 1 0;
   }
 }
+
+
