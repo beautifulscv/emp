@@ -4,6 +4,7 @@
   <%- include('partials/head') %>
   <link rel="stylesheet" href="/css/holdem.css">
   <link rel="stylesheet" href="/css/components/holdem-room-modal.css">
+
 </head>
 <body>
   <%- include('partials/navbar') %>
@@ -19,8 +20,14 @@
   <%- include('partials/holdem/room-modal') %>
   <%- include('partials/footer') %>
 
+  <script src="https://unpkg.com/colyseus.js@^0.15.0/dist/colyseus.js"></script>
+  <script>
+    // Set your monitor URL globally
+    window.monitorUrl = 'ws://127.0.0.1:4000'; // Replace with your actual URL
+  </script>
+  <script src="/js/components/holdem-room-modal.js"></script>
+  <script src="/js/holdem.js"></script>
   <script type="module" src="/js/modal.js"></script>
-  <script type="module" src="/js/holdem.js"></script>
   <script type="module">
     import { initProfileModal } from '/js/profileModal.js';
     import { initCashChargeModal } from '/js/cash-charge-modal.js';

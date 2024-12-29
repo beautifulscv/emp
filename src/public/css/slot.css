@@ -85,7 +85,7 @@
 /* Game Grid */
 .game-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Display 3 items per row on larger screens */
+  grid-template-columns: repeat(2, 1fr); /* Display 3 items per row on larger screens */
   gap: 24px;
   padding: 20px 0;
 }

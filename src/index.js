@@ -5,6 +5,9 @@ import { addViewHelpers } from './middleware/viewHelpers.js';
 import { checkAuthState } from './middleware/authMiddleware.js';
 import {executeQuery} from "./database.js";
 import {mockGames} from "./mock.js";
+import axios from "axios";
+import session from 'express-session';
+
 
 // Get directory name for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -17,6 +20,14 @@ const port = 3000;
 // Set up EJS as view engine
 app.set('view engine', 'ejs');
 app.set('views', join(__dirname, 'views'));
+
+// Add session middleware
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'your_secret_key',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: process.env.NODE_ENV === 'production' }
+}));
 
 // Serve static files
 app.use(express.static(join(__dirname, 'public')));
@@ -61,7 +72,7 @@ app.get('/holdem', async (req, res) => {
 app.get('/slot', async (req, res) => {
   let rows = mockGames.popular;
   try {
-    rows = await executeQuery("select gameName as title, thumbnailUrl as image from gameInfo where gameCategoryId = 0", []);
+    rows = await executeQuery("select gameName as title, thumbnailUrl as image, gameCode as code from gameInfo where gameCategoryId = 0", []);
   } catch (error) {
     console.log(error);
   }
@@ -112,12 +123,15 @@ app.post('/login', async (req, res) => {
         [userId, password]
     );
 
+    console.log('rows:', rows)
+
     if (rows.length > 0) {
       // Found user
       const user = rows[0];
       console.log('User logged in:', user.username);
       // In production, you'd probably store a session or JWT here
       // For example, set a cookie: req.session.user = { ... }
+      req.session.user = user;
 
       return res.json({
         success: true,
@@ -137,6 +151,52 @@ app.post('/login', async (req, res) => {
   } catch (error) {
     console.error('Login error:', error);
     return res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+app.get('/game/init', async (req, res) => {
+  try {
+    const userData = req.session.user;
+    const {id : userId} = userData;
+    const {gameCode} = req.query;
+
+    console.log('userData', userData);
+
+    if(!userData) {
+      res.json({
+        result: false,
+        msg: 'Please login to play games.'
+      });
+      return;
+    }
+
+    const url = `${process.env.API_URL}/integrator/games/init`;
+    console.log('url:', url);
+    const response = await axios.post(url, { gameCode, userId });
+
+    const { data } = response.data;
+    const { gameUrl } = data;
+    console.log('gameUrl:', gameUrl);
+
+    if (gameUrl) {
+      res.json({
+        result: true,
+        message: 'ok',
+        url: gameUrl
+      });
+    } else {
+      res.json({
+        result: false,
+        message: 'Invalid game code'
+      });
+    }
+  } catch (error) {
+    console.log(`error: ${error}`);
+    console.error('Error fetching game data:', error.response?.status, error.response?.message);
+    res.status(error.response?.status || 500).json({
+      result: false,
+      message: error.response?.data?.message || 'Internal server error'
+    });
   }
 });
 

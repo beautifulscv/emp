@@ -1,8 +1,8 @@
-import { initHoldemRoomModal } from './components/holdem-room-modal.js';
+// holdem.js
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize room modal
-  const roomModal = initHoldemRoomModal();
+  // Initialize room modal using global function
+  const roomModal = window.initHoldemRoomModal();
 
   // Add click handlers to channel cards
   const channelCards = document.querySelectorAll('.channel-card');

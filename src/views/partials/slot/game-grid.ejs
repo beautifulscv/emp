@@ -1,8 +1,8 @@
 <div class="game-grid">
-  <% games.forEach(game => { %>
-    <a href="#" class="game-card">
-      <img src="<%= game.image %>" alt="<%= game.title %>">
-      <span class="game-title"><%= game.title %></span>
-    </a>
-  <% }); %>
+    <% games.forEach(game => { %>
+        <a href="#" class="game-card" onclick="gameStart('<%= game.code %>'); return false;">
+            <img src="<%= game.image %>" alt="<%= game.title %>">
+            <span class="game-title"><%= game.title %></span>
+        </a>
+    <% }); %>
 </div>

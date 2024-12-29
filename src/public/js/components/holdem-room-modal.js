@@ -1,122 +1,115 @@
-import { holdemService } from '../services/holdemService.js';
+// holdem-room-modal.js
 
-export function initHoldemRoomModal() {
+// Make it a global function instead of an export
+window.initHoldemRoomModal = function() {
   const modal = document.getElementById('holdemRoomModal');
   const closeBtn = modal.querySelector('.close');
   const roomListBody = document.getElementById('roomListBody');
-  const autoJoinBtn = document.getElementById('autoJoinButton');
-  
-  let isAutoJoinActive = false;
-  let autoJoinInterval = null;
+  const autoJoinButton = document.getElementById('autoJoinButton');
 
-  // Close modal handlers
-  closeBtn.addEventListener('click', () => {
-    modal.style.display = 'none';
-    stopAutoJoin();
-  });
+  let client;
+  let monitorRoom;
 
-  window.addEventListener('click', (event) => {
-    if (event.target === modal) {
-      modal.style.display = 'none';
-      stopAutoJoin();
-    }
-  });
+  // Initialize Colyseus client and connect to monitor room
+  async function initializeMonitoring() {
+    try {
+      // Using global Colyseus object
+      client = new Colyseus.Client(window.monitorUrl);
+      monitorRoom = await client.joinOrCreate("monitor_room");
 
-  // Format number with commas
-  const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
-
-  // Enter room function
-  function enterRoom(roomId) {
-    window.open('https://google.com', '_blank', 'width=1024,height=768');
-  }
-
-  // Auto-join functionality
-  function startAutoJoin() {
-    isAutoJoinActive = true;
-    autoJoinBtn.classList.add('active');
-    autoJoinBtn.textContent = '자동 참여 중지';
-
-    autoJoinInterval = setInterval(() => {
-      const availableRooms = Array.from(roomListBody.querySelectorAll('tr')).map(row => ({
-        id: row.querySelector('.room-number').textContent,
-        isFull: row.querySelector('.player-count').classList.contains('full'),
-        isLocked: row.querySelector('.lock-icon') !== null
-      }));
-
-      const availableRoom = availableRooms.find(room => !room.isLocked && !room.isFull);
-      if (availableRoom) {
-        enterRoom(availableRoom.id);
-        stopAutoJoin();
-      }
-    }, 2000);
-  }
-
-  function stopAutoJoin() {
-    isAutoJoinActive = false;
-    autoJoinBtn.classList.remove('active');
-    autoJoinBtn.textContent = '자동 참여';
-    if (autoJoinInterval) {
-      clearInterval(autoJoinInterval);
-      autoJoinInterval = null;
+      // Listen for room list updates
+      monitorRoom.onMessage("rooms_list", (roomList) => {
+        updateRoomList(roomList);
+      });
+    } catch (error) {
+      console.error("Error connecting to monitor room:", error);
     }
   }
 
-  // Auto-join button handler
-  autoJoinBtn.addEventListener('click', () => {
-    if (isAutoJoinActive) {
-      stopAutoJoin();
-    } else {
-      startAutoJoin();
-    }
-  });
+  // Update room list UI
+  function updateRoomList(roomList) {
+    roomListBody.innerHTML = '';
 
-  // Update room list
-  function updateRoomList(rooms) {
-    roomListBody.innerHTML = rooms.map(room => `
-      <tr>
-        <td class="room-number">${room.id}</td>
+    roomList.forEach(room => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${room.roomId}</td>
+        <td>${room.clients}/${room.maxClients}</td>
+        <td>${formatCurrency(room.baseBlindAmount)}</td>
+        <td>${formatCurrency(room.baseBlindAmount * 2)}</td>
+        <td>${room.locked ? '🔒' : '🔓'}</td>
         <td>
-          <span class="player-count ${room.currentPlayers === room.maxPlayers ? 'full' : ''}">
-            ${room.currentPlayers}/${room.maxPlayers}
-          </span>
-        </td>
-        <td class="buy-in">${formatNumber(room.buyIn)}</td>
-        <td class="big-blind">${formatNumber(room.bigBlind)}</td>
-        <td>
-          ${room.isLocked ? '<span class="lock-icon">🔒</span>' : ''}
-        </td>
-        <td>
-          <button class="enter-button font-kr" 
-                  ${room.currentPlayers === room.maxPlayers ? 'disabled' : ''}
-                  onclick="window.open('https://google.com', '_blank', 'width=1024,height=768')">
+          <button class="join-button font-kr" data-room-id="${room.roomId}"
+            ${room.clients >= room.maxClients || room.locked ? 'disabled' : ''}>
             입장
           </button>
         </td>
-      </tr>
-    `).join('');
+      `;
+
+      // Add join button click handler
+      const joinButton = row.querySelector('.join-button');
+      joinButton.addEventListener('click', () => handleJoinRoom(room.roomId));
+
+      roomListBody.appendChild(row);
+    });
   }
 
-  // Connect to Colyseus server
-  async function connectToServer() {
-    const connected = await holdemService.connect('wss://your-colyseus-server.com');
-    if (connected) {
-      holdemService.addListener(updateRoomList);
-    } else {
-      console.error('Failed to connect to game server');
+  // Format currency with Korean won
+  function formatCurrency(amount) {
+    return new Intl.NumberFormat('ko-KR', {
+      style: 'currency',
+      currency: 'KRW'
+    }).format(amount);
+  }
+
+  // Handle room join
+  function handleJoinRoom(roomId) {
+    // Implement your room joining logic here
+    console.log(`Joining room: ${roomId}`);
+    // Example: window.location.href = `/game/holdem/${roomId}`;
+  }
+
+  // Handle auto join functionality
+  function handleAutoJoin() {
+    const availableRooms = Array.from(roomListBody.querySelectorAll('tr'))
+        .filter(row => {
+          const joinButton = row.querySelector('.join-button');
+          return !joinButton.disabled;
+        });
+
+    if (availableRooms.length > 0) {
+      const randomRoom = availableRooms[Math.floor(Math.random() * availableRooms.length)];
+      const roomId = randomRoom.querySelector('.join-button').dataset.roomId;
+      handleJoinRoom(roomId);
     }
   }
+
+  // Modal controls
+  function show() {
+    modal.style.display = 'block';
+    initializeMonitoring();
+  }
+
+  function hide() {
+    modal.style.display = 'none';
+    if (monitorRoom) {
+      monitorRoom.leave();
+    }
+  }
+
+  // Event listeners
+  closeBtn.addEventListener('click', hide);
+  autoJoinButton.addEventListener('click', handleAutoJoin);
+
+  // Close modal when clicking outside
+  window.addEventListener('click', (event) => {
+    if (event.target === modal) {
+      hide();
+    }
+  });
 
   return {
-    async show() {
-      modal.style.display = 'block';
-      await connectToServer();
-    },
-    hide() {
-      modal.style.display = 'none';
-      stopAutoJoin();
-      holdemService.disconnect();
-    }
+    show,
+    hide
   };
-}
+};
