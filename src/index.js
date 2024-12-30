@@ -63,7 +63,7 @@ app.get('/holdem', async (req, res) => {
   let channels = mockGames.channels;
   try {
     channels = await executeQuery("select channelName as name, description as requirement, minimum from pokerChannel;", []);
-    console.log(JSON.stringify(channels, null, 2));
+    // console.log(JSON.stringify(channels, null, 2));
   } catch (e) {
   }
   res.render('holdem', { title: '홀덤', channels });
@@ -158,7 +158,9 @@ app.get('/game/init', async (req, res) => {
   try {
     const userData = req.session.user;
     const {id : userId} = userData;
-    const {gameCode} = req.query;
+    const {gameCode, roomId} = req.query;
+
+    console.log('roomId:', roomId)
 
     console.log('userData', userData);
 
@@ -172,7 +174,8 @@ app.get('/game/init', async (req, res) => {
 
     const url = `${process.env.API_URL}/integrator/games/init`;
     console.log('url:', url);
-    const response = await axios.post(url, { gameCode, userId });
+    console.log('gameCode:', gameCode);
+    const response = await axios.post(url, { gameCode, userId, roomId });
 
     const { data } = response.data;
     const { gameUrl } = data;

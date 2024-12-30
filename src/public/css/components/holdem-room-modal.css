@@ -3,13 +3,22 @@
   max-width: 1000px;
   padding: 0;
   background: #fff;
+  max-height: 90vh; /* Limit height to 90% of viewport height */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Keep header and controls fixed */
+/* Keep header and controls fixed */
+.room-controls {
+  flex-shrink: 0; /* Prevent these sections from shrinking */
 }
 
 .room-list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
+  padding: 1.5rem;
   border-bottom: 1px solid #eee;
 }
 
@@ -18,13 +27,45 @@
   margin: 0;
 }
 
-.room-actions {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem; /* Increased gap between buttons */
+/* Make room list container scrollable */
+.room-list-container {
+  padding: 1.5rem;
+  overflow-y: auto; /* Enable vertical scrolling */
+  flex-grow: 1; /* Allow this section to grow and fill available space */
+  min-height: 0; /* Required for flex child to scroll */
 }
 
+
+/* Close button styles */
+.room-actions .close {
+  height: 36px;
+  padding: 0.5rem 1rem;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  color: #666;
+  font-weight: 500;
+  cursor: pointer;
+  min-width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.room-actions .close:hover {
+  background: #e5e7eb;
+  color: #333;
+}
+
+/* Controls section for auto-join button */
+.room-controls {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+/* Auto Join Button */
 .auto-join-button {
+  height: 36px;
   padding: 0.5rem 1rem;
   background: #2563eb;
   color: white;
@@ -32,7 +73,9 @@
   border-radius: 4px;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .auto-join-button:hover {
@@ -47,19 +90,32 @@
   background: #b91c1c;
 }
 
-/* Table Styles */
+/* Table container */
 .room-list-container {
   padding: 1.5rem;
-  overflow-x: auto;
+  overflow-y: auto; /* Enable vertical scrolling */
+  flex-grow: 1; /* Allow this section to grow and fill available space */
+  min-height: 0; /* Required for flex child to scroll */
 }
 
+/* Ensure table header stays fixed while body scrolls */
 .room-list-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 800px; /* Ensure table doesn't get too cramped */
+  min-width: 800px;
 }
 
-.room-list-table th,
+.room-list-table thead {
+  position: sticky;
+  top: 0;
+  background: #f8f8f8;
+  z-index: 1;
+}
+
+/* Add box-shadow to thead to create separation */
+.room-list-table thead th {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
 .room-list-table td {
   padding: 1rem;
   text-align: center;
@@ -117,4 +173,22 @@
 .enter-button:disabled {
   background: #ccc;
   cursor: not-allowed;
+}
+
+.join-button {
+  padding: 5px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.join-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.join-button:hover:not(:disabled) {
+  background-color: #45a049;
 }

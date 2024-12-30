@@ -12,6 +12,7 @@ window.initHoldemRoomModal = function() {
 
   // Initialize Colyseus client and connect to monitor room
   async function initializeMonitoring() {
+    console.log("initializeMonitoring")
     try {
       // Using global Colyseus object
       client = new Colyseus.Client(window.monitorUrl);
@@ -19,6 +20,7 @@ window.initHoldemRoomModal = function() {
 
       // Listen for room list updates
       monitorRoom.onMessage("rooms_list", (roomList) => {
+        console.log("Received room list update:", roomList)
         updateRoomList(roomList);
       });
     } catch (error) {
@@ -26,25 +28,30 @@ window.initHoldemRoomModal = function() {
     }
   }
 
-  // Update room list UI
+  function handleJoinRoom(roomId) {
+    console.log(`Joining room: ${roomId}`);
+    pokerStart(roomId); // Call the existing pokerStart function with roomId
+  }
+
+  // Update the updateRoomList function to add the "참여" button
   function updateRoomList(roomList) {
     roomListBody.innerHTML = '';
 
     roomList.forEach(room => {
       const row = document.createElement('tr');
       row.innerHTML = `
-        <td>${room.roomId}</td>
-        <td>${room.clients}/${room.maxClients}</td>
-        <td>${formatCurrency(room.baseBlindAmount)}</td>
-        <td>${formatCurrency(room.baseBlindAmount * 2)}</td>
-        <td>${room.locked ? '🔒' : '🔓'}</td>
-        <td>
-          <button class="join-button font-kr" data-room-id="${room.roomId}"
-            ${room.clients >= room.maxClients || room.locked ? 'disabled' : ''}>
-            입장
-          </button>
-        </td>
-      `;
+            <td>${room.roomId}</td>
+            <td>${room.clients}/${room.maxClients}</td>
+            <td>${formatCurrency(room.baseBlindAmount)}</td>
+            <td>${formatCurrency(room.baseBlindAmount * 2)}</td>
+            <td>${room.locked ? '🔒' : '🔓'}</td>
+            <td>
+                <button class="join-button font-kr" data-room-id="${room.roomId}"
+                    ${room.clients >= room.maxClients || room.locked ? 'disabled' : ''}>
+                    참여
+                </button>
+            </td>
+        `;
 
       // Add join button click handler
       const joinButton = row.querySelector('.join-button');
@@ -67,7 +74,9 @@ window.initHoldemRoomModal = function() {
     // Implement your room joining logic here
     console.log(`Joining room: ${roomId}`);
     // Example: window.location.href = `/game/holdem/${roomId}`;
+    pokerStart(roomId);
   }
+  // Modify the pokerStart function to work with room IDs
 
   // Handle auto join functionality
   function handleAutoJoin() {
@@ -75,13 +84,37 @@ window.initHoldemRoomModal = function() {
         .filter(row => {
           const joinButton = row.querySelector('.join-button');
           return !joinButton.disabled;
+        })
+        .map(row => {
+          // Extract information from each cell
+          const cells = row.querySelectorAll('td');
+          const joinButton = row.querySelector('.join-button');
+
+          return {
+            roomId: joinButton.dataset.roomId,
+            clientCount: cells[1].textContent,
+            baseBlind: cells[2].textContent,
+            maxBlind: cells[3].textContent,
+            isLocked: cells[4].textContent === '🔒'
+          };
         });
 
+    console.log('availableRooms:', JSON.stringify(availableRooms));
+
     if (availableRooms.length > 0) {
+      // Join the first available room
+      const roomToJoin = availableRooms[0];
+      console.log('Joining room:', roomToJoin);
+      window.pokerStart(roomToJoin.roomId);
+    } else {
+      alert("현재 참여 가능한 방이 없습니다."); // No available rooms message in Korean
+    }
+
+/*    if (availableRooms.length > 0) {
       const randomRoom = availableRooms[Math.floor(Math.random() * availableRooms.length)];
       const roomId = randomRoom.querySelector('.join-button').dataset.roomId;
       handleJoinRoom(roomId);
-    }
+    }*/
   }
 
   // Modal controls
