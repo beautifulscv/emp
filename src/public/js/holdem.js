@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   channelCards.forEach(card => {
     card.addEventListener('click', (e) => {
       e.preventDefault();
-      roomModal.show();
+      roomModal.show('1');//channelCards.channelId);
     });
   });
 

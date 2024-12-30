@@ -62,7 +62,7 @@ app.get('/avatar-shop', async (req, res) => {
 app.get('/holdem', async (req, res) => {
   let channels = mockGames.channels;
   try {
-    channels = await executeQuery("select channelName as name, description as requirement, minimum from pokerChannel;", []);
+    channels = await executeQuery("select id as channelId, channelName as name, description as requirement, minimum, baseBlindAmount from pokerChannel;", []);
     // console.log(JSON.stringify(channels, null, 2));
   } catch (e) {
   }
