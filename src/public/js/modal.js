@@ -37,8 +37,30 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      authState.clearSession();
+    logoutBtn.addEventListener('click', async () => {
+      try {
+        const response = await fetch('/logout', {
+          method: 'GET',
+          credentials: 'same-origin' // Includes cookies in the request
+        });
+
+        if (response.ok) {
+          // Clear local auth state
+          authState.clearSession();
+          // Reload page or redirect to home
+          window.location.reload();
+        } else {
+          console.error('Logout failed:', response.status);
+        }
+      } catch (error) {
+        console.error('Error during logout:', error);
+      } finally {
+        window.location = '/';
+      }
+      // alert('logoutBtn')
+      // authState.clearSession();
+
+
     });
   }
 });

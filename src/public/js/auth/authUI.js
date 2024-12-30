@@ -1,5 +1,16 @@
 import { authState } from './authState.js';
 
+
+/*
+      authState.setSession({
+        id: user.id,//MOCK_USER.id,
+        username: user.username, //MOCK_USER.username,
+        avatarUrl: MOCK_USER.avatarUrl,
+        // add additional user data here (including cash if needed)
+        cash: 5000000
+      });
+ */
+
 export function initAuthUI() {
   const loginSection = document.querySelector('.login-section');
   const userSection = document.querySelector('.user-section');

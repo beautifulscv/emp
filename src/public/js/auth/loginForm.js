@@ -123,17 +123,19 @@ export function initLoginForm(modal) {
       const result = await response.json();
       if(response.ok && result.success) { //(userId === MOCK_USER.id && password === MOCK_USER.password) {
         const { user } = result;
-        // Successful login
-        authState.setSession({
+/*        authState.setSession({
           id: user.id,//MOCK_USER.id,
           username: user.username, //MOCK_USER.username,
           avatarUrl: MOCK_USER.avatarUrl,
           // add additional user data here (including cash if needed)
           cash: 5000000
-        });
+        });*/
+
         modal.style.display = 'none';
         form.reset();
         clearError();
+
+        window.location.reload();
       } else {
         // Failed login
         if (!handleFailedAttempt()) {

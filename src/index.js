@@ -7,6 +7,7 @@ import {executeQuery} from "./database.js";
 import {mockGames} from "./mock.js";
 import axios from "axios";
 import session from 'express-session';
+// import {MOCK_USER} from "./public/js/config/constants";
 
 
 // Get directory name for ES modules
@@ -37,6 +38,17 @@ app.use(express.json());
 // Add middleware
 app.use(addViewHelpers);
 app.use(checkAuthState);
+
+const setLocals = (req, res, next) => {
+  // Make session data available to all views
+  res.locals.isLoggedIn = !!req.session.user;
+  res.locals.user = req.session.user || {};
+  res.locals.path = req.path;
+  next();
+};
+
+// app.js or index.js
+app.use(setLocals);
 
 // Routes
 app.get('/', async (req, res) => {
@@ -119,10 +131,9 @@ app.post('/login', async (req, res) => {
   try {
     // Query the DB to find a matching user
     const rows = await executeQuery(
-        'SELECT * FROM user WHERE username = ? AND passwordHash = ? LIMIT 1',
+        'SELECT u.*, a.image avatarImage FROM user u JOIN avatar a ON a.id = u.avatarId WHERE username = ? AND passwordHash = ? LIMIT 1;',
         [userId, password]
     );
-
     console.log('rows:', rows)
 
     if (rows.length > 0) {
@@ -132,6 +143,16 @@ app.post('/login', async (req, res) => {
       // In production, you'd probably store a session or JWT here
       // For example, set a cookie: req.session.user = { ... }
       req.session.user = user;
+
+/*
+      authState.setSession({
+        id: user.id,//MOCK_USER.id,
+        username: user.username, //MOCK_USER.username,
+        avatarUrl: MOCK_USER.avatarUrl,
+        // add additional user data here (including cash if needed)
+        cash: 5000000
+      });
+*/
 
       return res.json({
         success: true,
@@ -152,6 +173,11 @@ app.post('/login', async (req, res) => {
     console.error('Login error:', error);
     return res.status(500).json({ success: false, message: 'Server error' });
   }
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
 });
 
 app.get('/game/init', async (req, res) => {
@@ -196,9 +222,9 @@ app.get('/game/init', async (req, res) => {
   } catch (error) {
     console.log(`error: ${error}`);
     console.error('Error fetching game data:', error.response?.status, error.response?.message);
-    res.status(error.response?.status || 500).json({
+    res.json({
       result: false,
-      message: error.response?.data?.message || 'Internal server error'
+      message: 'Login!'
     });
   }
 });
