@@ -25,21 +25,31 @@
         </button>-->
 
             <!-- Inside your EJS template -->
-        <button id="cashChargeBtn" class="cash-charge-button flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-amber-900 rounded-full text-sm font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 group">
-            <div class="flex items-center justify-center w-6 h-6 bg-amber-100 bg-opacity-30 rounded-full">
-                <!-- You can replace this SVG with your preferred wallet icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path>
-                    <path d="M4 6v12c0 1.1.9 2 2 2h14v-4"></path>
-                    <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"></path>
-                </svg>
-            </div>
 
-            <div class="flex flex-col items-start leading-tight">
-                <span class="font-medium">₩<%= typeof cashAmount !== 'undefined' ? cashAmount.toLocaleString() : '0' %></span>
-                <span class="text-xs opacity-80">충전</span>
-            </div>
-        </button>
+
+            <button id="cashChargeBtn" class="cash-charge-button">
+                <div class="flex items-center justify-center w-6 h-6 bg-amber-100 bg-opacity-30 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="16"
+                         height="16"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round"
+                         class="translate-y-px">
+                        <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path>
+                        <path d="M4 6v12c0 1.1.9 2 2 2h14v-4"></path>
+                        <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"></path>
+                    </svg>
+                </div>
+
+                <div class="flex flex-col items-start leading-tight">
+                    <span class="font-medium">₩<%= typeof cashAmount !== 'undefined' ? cashAmount.toLocaleString() : '0' %></span>
+                    <span class="text-xs opacity-80">충전</span>
+                </div>
+            </button>
 
         <div class="user-section">
 <!--          <a href="/mypage" class="nav-item <%= path === '/mypage' ? 'active' : '' %>">마이페이지</a>-->
