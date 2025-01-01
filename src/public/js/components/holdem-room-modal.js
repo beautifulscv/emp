@@ -9,12 +9,22 @@ window.initHoldemRoomModal = function() {
   let client;
   let monitorRoom;
   let currentChannelId = null;
+  let isConnecting = false;
+  let reconnectAttempts = 0;
+  const MAX_RECONNECT_ATTEMPTS = 30;
+  const RECONNECT_DELAY = 3000; // 2 seconds
 
   async function initializeMonitoring() {
-    console.log("initializeMonitoring")
+    console.log("initializeMonitoring");
+    if (isConnecting) return;
+
+    isConnecting = true;
     try {
       client = new Colyseus.Client(window.monitorUrl);
       monitorRoom = await client.joinOrCreate("monitor_room");
+
+      // Reset reconnection attempts on successful connection
+      reconnectAttempts = 0;
 
       monitorRoom.onMessage("rooms_list", (roomList) => {
         console.log("Received room list update:", roomList);
@@ -24,9 +34,46 @@ window.initHoldemRoomModal = function() {
         );
         updateRoomList(filteredRooms);
       });
+
+      // Add connection state change handling
+      monitorRoom.onLeave((code) => {
+        console.log("Connection lost with code:", code);
+        handleDisconnection();
+      });
+
+      monitorRoom.onError((error) => {
+        console.error("Monitor room error:", error);
+        handleDisconnection();
+      });
+
     } catch (error) {
       console.error("Error connecting to monitor room:", error);
+      handleDisconnection();
+    } finally {
+      isConnecting = false;
     }
+  }
+
+  function handleDisconnection() {
+    if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
+      console.log("Max reconnection attempts reached");
+      alert("서버와의 연결이 끊어졌습니다. 페이지를 새로고침해 주세요.");
+      return;
+    }
+
+    if (!currentChannelId) {
+      // Don't attempt reconnection if modal is closed
+      return;
+    }
+
+    reconnectAttempts++;
+    console.log(`Attempting reconnection ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS} in ${RECONNECT_DELAY}ms`);
+
+    setTimeout(() => {
+      if (currentChannelId) { // Double check modal is still open
+        initializeMonitoring();
+      }
+    }, RECONNECT_DELAY);
   }
 
   function handleJoinRoom(roomId) {
@@ -98,9 +145,9 @@ window.initHoldemRoomModal = function() {
   }
 
   function show(channelId) {
-    // alert(channelId)
     currentChannelId = channelId;
     modal.style.display = 'block';
+    reconnectAttempts = 0; // Reset reconnection attempts when showing modal
     initializeMonitoring();
   }
 
