@@ -1,5 +1,6 @@
 // holdem-room-modal.js
 
+
 window.initHoldemRoomModal = function() {
   const modal = document.getElementById('holdemRoomModal');
   const closeBtn = modal.querySelector('.close');
@@ -14,8 +15,16 @@ window.initHoldemRoomModal = function() {
   const MAX_RECONNECT_ATTEMPTS = 30;
   const RECONNECT_DELAY = 3000; // 2 seconds
 
+  const IS_DEMO = true;
+
   async function initializeMonitoring() {
     console.log("initializeMonitoring");
+
+    if(IS_DEMO) {
+      updateRoomList([]);
+      return;
+    }
+
     if (isConnecting) return;
 
     isConnecting = true;
@@ -83,6 +92,18 @@ window.initHoldemRoomModal = function() {
 
   function updateRoomList(roomList) {
     roomListBody.innerHTML = '';
+
+    console.log("roomList: ", JSON.stringify(roomList, null, 2));
+
+    if(roomList.length === 0) {
+      roomList.push({
+        roomId: "UZISNL3Uh",
+        channelId: "1",
+        clients: 0,
+        maxClients: 6,
+        baseBlindAmount: 10000,
+      });
+    }
 
     roomList.forEach(room => {
       const row = document.createElement('tr');

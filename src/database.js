@@ -5,26 +5,35 @@ dotenv.config({ path: '../../.env' });
 
 console.log('MYSQL_HOST:', process.env.MYSQL_HOST);
 
-const connectionPool = mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    database: process.env.MYSQL_DATABASE,
-    password: process.env.MYSQL_PASSWORD,
-    port: process.env.MYSQL_PORT,
-    timezone: '+09:00',
-    charset: 'utf8mb4',
-    multipleStatements: true,
-    waitForConnections: true,
-    connectionLimit: 5,
-    queueLimit: 50,
-    // debug: ['ComQueryPacket']
-});
+let connectionPool = null;
+
+// Only create pool if environment variables are defined
+if (process.env.MYSQL_HOST) {
+    connectionPool = mysql.createPool({
+        host: process.env.MYSQL_HOST,
+        user: process.env.MYSQL_USER,
+        database: process.env.MYSQL_DATABASE,
+        password: process.env.MYSQL_PASSWORD,
+        port: process.env.MYSQL_PORT,
+        timezone: '+09:00',
+        charset: 'utf8mb4',
+        multipleStatements: true,
+        waitForConnections: true,
+        connectionLimit: 5,
+        queueLimit: 50,
+    });
+}
 
 /**
  * Get a connection from the connection pool.
  * @returns {Promise<Connection>} A promise that resolves to a MySQL connection.
  */
 async function getConnection() {
+    if (!connectionPool) {
+        console.log('No database connection available - environment variables not configured');
+        return null;
+    }
+
     try {
         const connection = await connectionPool.getConnection();
         return connection;
@@ -41,6 +50,11 @@ async function getConnection() {
  * @returns {Promise<Array>} A promise that resolves to the result set of the query.
  */
 async function executeQuery(sql, args) {
+    if (!connectionPool) {
+        console.log('No database connection available - returning empty array');
+        return [];
+    }
+
     try {
         const [rows, _] = await connectionPool.query(sql, args);
         return rows;
@@ -55,6 +69,10 @@ async function executeQuery(sql, args) {
  * @returns {Promise<void>} A promise that resolves when all connections are closed.
  */
 async function closeConnectionPool() {
+    if (!connectionPool) {
+        return;
+    }
+
     try {
         await connectionPool.end();
         console.log('All connections in the pool have been closed.');
@@ -65,7 +83,3 @@ async function closeConnectionPool() {
 }
 
 export { getConnection, executeQuery, closeConnectionPool };
-
-/*executeQuery('SELECT 1 + 1 AS solution').then((rows) => {
-    console.log('The solution is:', rows[0].solution);
-});*/

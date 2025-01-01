@@ -7,6 +7,7 @@ import {executeQuery} from "./database.js";
 import {mockGames} from "./mock.js";
 import axios from "axios";
 import session from 'express-session';
+import {IS_DEMO} from "./config.js";
 // import {MOCK_USER} from "./public/js/config/constants";
 
 
@@ -55,8 +56,11 @@ app.get('/', async (req, res) => {
   let avatars = mockGames.avatars;
   try {
     avatars = await executeQuery("select price, title as name, image as image from avatar;", []);
-    console.log(JSON.stringify(avatars, null, 2));
+    // console.log(JSON.stringify(avatars, null, 2));
   } catch (e) {
+  }
+  if(avatars.length === 0) {
+    avatars  =mockGames.avatars;
   }
   res.render('index', { title: '아바타 상점' , avatars});
 });
@@ -65,8 +69,11 @@ app.get('/avatar-shop', async (req, res) => {
   let avatars = mockGames.avatars;
   try {
     avatars = await executeQuery("select price, title as name, image as image from avatar;", []);
-    console.log(JSON.stringify(avatars, null, 2));
+    // console.log(JSON.stringify(avatars, null, 2));
   } catch (e) {
+  }
+  if(avatars.length === 0) {
+    avatars  =mockGames.avatars;
   }
   res.render('avatar-shop', { title: '아바타 상점' , avatars});
 });
@@ -75,8 +82,11 @@ app.get('/holdem', async (req, res) => {
   let channels = mockGames.channels;
   try {
     channels = await executeQuery("select id as channelId, channelName as name, description as requirement, minimum, baseBlindAmount from pokerChannel;", []);
-    // console.log(JSON.stringify(channels, null, 2));
+    console.log(JSON.stringify(channels, null, 2));
   } catch (e) {
+  }
+  if(channels.length === 0) {
+    channels = mockGames.channels;
   }
   res.render('holdem', { title: '홀덤', channels });
 });
@@ -89,6 +99,9 @@ app.get('/slot', async (req, res) => {
     console.log(error);
   }
   console.log(JSON.stringify(rows, null, 2));
+  if(rows.length === 0) {
+    rows = mockGames.popular;
+  }
 
   res.render('slot', {
     title: '슬롯',
@@ -103,6 +116,9 @@ app.get('/membership', async (req, res) => {
     memberships = await executeQuery("select id, earnedExp, bonusMoney, monthlyFee, imageUrl, membershipName from membership;", []);
     console.log(JSON.stringify(memberships, null, 2));
   } catch (e) {
+  }
+  if(memberships.length === 0) {
+    memberships = mockGames.memberships;
   }
   res.render('membership', { title: '멤버십', memberships });
 });
@@ -128,7 +144,47 @@ app.post('/login', async (req, res) => {
     return res.status(400).json({ message: 'Missing credentials' });
   }
 
+  if(IS_DEMO) {
+    const user = {
+      id: 1,
+      username: 'dev1',
+      email: 'dev1@example.com',
+      passwordHash: '2580',
+      registrationDate: '2024-09-25T05:56:56.000Z',
+      lastLoginDate: '2024-11-19T07:45:35.000Z',
+      isActive: 1,
+      displayName: 'dev1',
+      balance: 1419053000,
+      parentUserId: 7,
+      level: 2,
+      pinCode: '1111',
+      accountHolder: '홍길동',
+      bankName: '국민은행',
+      accountNumber: '1111-1111-1111',
+      lastIpAddress: null,
+      lastLogin: null,
+      isGameRestriction: 0,
+      isLocked: 0,
+      silver: 8637505000,
+      rebateBalance: 10471510,
+      phone: '0100000000',
+      avatarId: 2,
+      avatarImage: 'https://dev-api.emp555.com/avatar/avatar_0088.jpg'
+  };
+    req.session.user = user;
+    return res.json({
+      success: true,
+      user: {
+        id: user.id,
+        username: user.username,
+        avatarUrl: user.avatarUrl || '/images/avatar_placeholder.png', // 'https://dev-api.emp555.com/avatar/avatar_1622.jpg'
+        // any other user fields you want to expose
+      },
+    });
+  }
+
   try {
+
     // Query the DB to find a matching user
     const rows = await executeQuery(
         'SELECT u.*, a.image avatarImage FROM user u JOIN avatar a ON a.id = u.avatarId WHERE username = ? AND passwordHash = ? LIMIT 1;',
