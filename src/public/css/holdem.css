@@ -1,35 +1,27 @@
 /* Holdem Page Styles */
 .hero-bg {
-  /* Let’s give it a minimum height so we have a clear “hero” area */
-  min-height: 500px; /* adjust as you see fit */
-
-  /* Full width and background image */
+  min-height: 600px;
   width: 100%;
-  background: url('/images/poker_background_2.jpg') no-repeat center top;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)),
+              url('/images/poker_background_2.jpg') no-repeat center center;
   background-size: cover;
-
-  /* Flex container to align content at the bottom */
   display: flex;
-  flex-direction: column;   /* let children stack vertically */
-  justify-content: flex-end; /* push the content to the bottom */
-  align-items: center;       /* center horizontally */
-  margin: 0;                 /* remove any default margin */
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0;
+  padding: 40px 0;
 }
 
 .content {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;  /* horizontally center within .hero-bg */
-  /* If you need a tiny bottom spacing from the hero edge: */
-  /* margin-bottom: 20px; */
+  margin: 0 auto;
 }
 
 /* Channel List Container */
 .channels {
   position: relative;
-  /* Use your desired image path */
-
-  /* Existing properties */
   padding: 20px 40px;
   width: 100%;
 }
@@ -42,65 +34,78 @@
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   width: 100%;
+  padding: 10px 0;
 }
 
 .channel-card {
   flex: 1;
-  min-width: 200px;
+  min-width: 240px;
   max-width: 300px;
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 24px;
   text-decoration: none;
-  color: #333;
-  transition: transform 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  color: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 1px solid #eaeaea;
 }
 
 .channel-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
 .channel-header {
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .channel-header h3 {
-  margin: 0 0 8px 0;
-  font-size: 18px;
-  /* Optional accent color for the title */
+  margin: 0 0 12px 0;
+  font-size: 24px;
+  font-weight: 600;
   color: #ffd700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .player-count {
-  font-size: 14px;
-  opacity: 0.9;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+  display: block;
+  margin-top: 8px;
 }
 
 .channel-buttons {
   text-align: center;
+  margin-top: auto;
 }
 
 .web-button {
-  background: #fff;
-  color: #1a472a;
+  width: 100%;
+  background: linear-gradient(135deg, #ffd700, #ffa500);
+  color: #1a1a1a;
   border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s, color 0.2s;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .web-button:hover {
-  background: #ffd700;
-  color: #1a472a;
+  background: linear-gradient(135deg, #ffe44d, #ffb733);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
 }
 
 /* Carousel Navigation */
@@ -108,70 +113,69 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border: none;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  color: #333;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+  color: white;
   font-size: 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
   z-index: 1;
 }
 
 .carousel-button:hover {
-  background: white;
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-50%) scale(1.1);
 }
 
 .carousel-button.prev {
-  left: 0;
+  left: 20px;
 }
 
 .carousel-button.next {
-  right: 0;
+  right: 20px;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .content {
-    padding: 0 16px;
-  }
-
-  .channels {
+  .hero-bg {
+    min-height: 500px;
     padding: 20px 0;
   }
 
-  .channel-list {
-    flex-direction: column;
-    gap: 16px;
-    overflow-x: visible;
+  .channels {
+    padding: 20px 10px;
   }
 
   .channel-card {
-    flex: none;
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
+    min-width: 200px;
+    padding: 20px;
+  }
+
+  .channel-header h3 {
+    font-size: 20px;
   }
 
   .carousel-button {
-    display: none;
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
   }
 }
 
 /* Wide Screen Optimizations */
 @media (min-width: 1200px) {
   .channel-list {
-    justify-content: space-between;
+    justify-content: center;
   }
 
   .channel-card {
-    flex: 1 1 0;
+    flex: 0 1 280px;
   }
 }
-
-

@@ -1,70 +1,33 @@
 /* Slot Page Styles */
+@import './components/game-card.css';
+
 .hero-bg {
-  /* Let’s give it a minimum height so we have a clear “hero” area */
-  min-height: 500px; /* adjust as you see fit */
-
-  /* Full width and background image */
+  min-height: 500px;
   width: 100%;
-  background: url('/images/poker_background_3.jpg') no-repeat center top;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)),
+              url('/images/poker_background_3.jpg') no-repeat center top;
   background-size: cover;
-
-  /* Flex container to align content at the bottom */
   display: flex;
-  flex-direction: column;   /* let children stack vertically */
-  justify-content: flex-end; /* push the content to the bottom */
-  align-items: center;       /* center horizontally */
-  margin: 0;                 /* remove any default margin */
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0;
 }
 
 .content {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;  /* horizontally center within .hero-bg */
-  /* If you need a tiny bottom spacing from the hero edge: */
-  /* margin-bottom: 20px; */
-}
-
-/* Winning Banner */
-.winning-banner {
-  background: linear-gradient(to right, #1a1a2e, #16213e);
-  color: white;
-  padding: 12px 0;
-  overflow: hidden;
-}
-
-.banner-content {
-  display: flex;
-  justify-content: space-between;
-  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
-}
-
-.winner {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.winner .username {
-  color: #ffd700;
-  font-weight: bold;
-}
-
-.winner .bonus {
-  color: #ff6b6b;
-}
-
-.winner .amount {
-  color: #4cd137;
-  font-weight: bold;
+  padding: 40px 20px;
 }
 
 /* Game Tabs */
 .game-tabs {
   display: flex;
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 4px;
 }
 
 .tab-button {
@@ -72,66 +35,33 @@
   border: none;
   background: none;
   font-size: 16px;
-  color: #666;
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
   border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
 }
 
 .tab-button.active {
-  color: #ff6b00;
-  border-bottom-color: #ff6b00;
+  color: #ffd700;
+  border-bottom-color: #ffd700;
 }
 
 /* Game Grid */
 .game-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Display 3 items per row on larger screens */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px;
   padding: 20px 0;
 }
 
-.game-card {
-  text-decoration: none;
-  color: inherit;
-  transition: transform 0.2s;
-}
-
-.game-card:hover {
-  transform: translateY(-5px);
-}
-
-/* Maintain 889:495 Aspect Ratio */
-.game-card img {
-  width: 100%;
-  aspect-ratio: 889 / 495; /* Aspect ratio for responsive design */
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 8px;
-}
-
-.game-title {
-  display: block;
-  text-align: center;
-  font-size: 14px;
-  margin-top: 8px;
-}
-
 /* Responsive Design */
-@media (max-width: 1024px) { /* Tablet mode */
+@media (max-width: 768px) {
+  .content {
+    padding: 20px;
+  }
+
   .game-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust to fill available space */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 16px;
   }
 }
-
-@media (max-width: 768px) { /* Mobile mode */
-  .game-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Smaller columns for mobile */
-    gap: 16px;
-  }
-
-  .game-card img {
-    aspect-ratio: 889 / 495; /* Maintain aspect ratio */
-  }
-}
-

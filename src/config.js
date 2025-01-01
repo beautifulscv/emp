@@ -1,1 +1,1 @@
-export const IS_DEMO = true;
+export const IS_DEMO = false;

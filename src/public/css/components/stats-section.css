@@ -27,6 +27,13 @@
 .stats-label {
   color: #666;
   font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stats-icon {
+  color: #ff6b00;
 }
 
 .stats-value {

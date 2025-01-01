@@ -15,7 +15,7 @@ window.initHoldemRoomModal = function() {
   const MAX_RECONNECT_ATTEMPTS = 30;
   const RECONNECT_DELAY = 3000; // 2 seconds
 
-  const IS_DEMO = true;
+  const IS_DEMO = false;
 
   async function initializeMonitoring() {
     console.log("initializeMonitoring");
